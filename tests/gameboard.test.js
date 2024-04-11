@@ -113,7 +113,15 @@ describe("place ship on board", () => {
       expect(gameBoard.shipsOnBoard.get(1).hits).toEqual(1);
     });
 
-    test("ship4 hit until sunk", () => {
+    test("ship1 hit until it sunk", () => {
+      gameBoard.receiveAttack(2);
+      gameBoard.receiveAttack(3);
+      gameBoard.receiveAttack(4);
+      gameBoard.receiveAttack(5);
+      expect(gameBoard.shipsOnBoard.get(1).isSunk()).toBeTruthy();
+    });
+
+    test("ship4 hit until it sunk", () => {
       gameBoard.receiveAttack(9);
       expect(gameBoard.shipsOnBoard.get(9).hits).toEqual(1);
 
@@ -160,6 +168,12 @@ describe("place ship on board", () => {
       expect(gameBoard.missed.has(21)).toBeTruthy();
       expect(gameBoard.missed.has(11)).toBeTruthy();
       expect(gameBoard.missed.has(15)).toBeTruthy();
+    });
+
+    describe("all ships have been sunked", () => {
+      test("ships sunked", () => {
+        expect(gameBoard.allShipSunk()).toBeTruthy();
+      });
     });
   });
 });
