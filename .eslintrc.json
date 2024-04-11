@@ -11,7 +11,12 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "ignorePatterns": ["webpack.common.js", "webpack.dev.js", "webpack.prod.js", "**/vendor/*.js"],
+  "ignorePatterns": [
+    "webpack.common.js",
+    "webpack.dev.js",
+    "webpack.prod.js",
+    "**/vendor/*.js"
+  ],
   "rules": {
     "jest/no-disabled-tests": "warn",
     "jest/no-focused-tests": "error",
