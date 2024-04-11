@@ -31,4 +31,35 @@ export default class Gameboard {
   get length() {
     return this.boardWidth * this.boardheight;
   }
+
+  _shipPosition(start, end, shipLength) {
+    const position = [];
+    const coordDiff =
+      shipLength > 1 ? Math.floor((end - start) / (shipLength - 1)) : 1;
+    for (let i = start; i <= end; i += coordDiff) {
+      position.push(i);
+    }
+    return position;
+  }
+
+  placeShipOnBoard(shipName, start, end, shipLength) {
+    if (start > end) {
+      throw new Error("end value must be greater than start value.");
+    }
+    if (start < 1 || start > this.length || end < 1 || end > this.length) {
+      throw new Error("given coordinates are outside the board.");
+    }
+    const coords = this._shipPosition(start, end, shipLength);
+
+    // Check if the a ship is already placed at these coordinates.
+    coords.forEach((pos) => {
+      if (this.shipsOnBoard.has(pos)) {
+        throw new Error("a ship is already placed at these coordinates.");
+      }
+    });
+
+    coords.forEach((pos) => {
+      this.shipsOnBoard.set(pos, shipName);
+    });
+  }
 }
