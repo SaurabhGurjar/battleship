@@ -24,6 +24,7 @@ export default class Gameboard {
       throw new Error("dimensions must be integers.");
     }
     this.shipsOnBoard = new Map();
+    this.missed = new Set();
     this.boardWidth = width;
     this.boardheight = height;
   }
@@ -34,11 +35,17 @@ export default class Gameboard {
 
   _shipPosition(start, end, shipLength) {
     const position = [];
+
+    /** Finding difference between start and end coordinates to determine
+     * if the ship is place verticaly or horzontally.
+     */
     const coordDiff =
       shipLength > 1 ? Math.floor((end - start) / (shipLength - 1)) : 1;
+
     for (let i = start; i <= end; i += coordDiff) {
       position.push(i);
     }
+
     return position;
   }
 
@@ -61,5 +68,22 @@ export default class Gameboard {
     coords.forEach((pos) => {
       this.shipsOnBoard.set(pos, shipName);
     });
+  }
+
+  receiveAttack(coord) {
+    if (typeof coord !== "number" || isNaN(coord)) {
+      throw new TypeError(`'${coord}' is not a number.`);
+    }
+    if (!Number.isInteger(coord)) {
+      throw new TypeError(`${coord} is not a valid coordinate.`);
+    }
+    if (this.shipsOnBoard.has(coord)) {
+      if (this.shipsOnBoard.get(coord).isSunk()) {
+        throw new Error("this ship has already been sunked.");
+      }
+      this.shipsOnBoard.get(coord).hit();
+    } else {
+      this.missed.add(coord);
+    }
   }
 }
