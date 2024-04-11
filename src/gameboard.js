@@ -86,4 +86,14 @@ export default class Gameboard {
       this.missed.add(coord);
     }
   }
+
+  allShipSunk() {
+    const ships = new Set(Array.from(this.shipsOnBoard.values()));
+    ships.forEach((ship) => {
+      if (!ship.isSunk()) {
+        return false;
+      }
+    });
+    return true;
+  }
 }
