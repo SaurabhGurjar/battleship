@@ -106,4 +106,60 @@ describe("place ship on board", () => {
       ).toThrow("end value must be greater than start value.");
     });
   });
+
+  describe("receive attack", () => {
+    test("ship1 hit", () => {
+      gameBoard.receiveAttack(1);
+      expect(gameBoard.shipsOnBoard.get(1).hits).toEqual(1);
+    });
+
+    test("ship4 hit until sunk", () => {
+      gameBoard.receiveAttack(9);
+      expect(gameBoard.shipsOnBoard.get(9).hits).toEqual(1);
+
+      gameBoard.receiveAttack(17);
+      expect(gameBoard.shipsOnBoard.get(17).hits).toEqual(2);
+
+      gameBoard.receiveAttack(25);
+      expect(gameBoard.shipsOnBoard.get(25).hits).toEqual(3);
+
+      gameBoard.receiveAttack(33);
+      expect(gameBoard.shipsOnBoard.get(33).hits).toEqual(4);
+      expect(gameBoard.shipsOnBoard.get(9).isSunk()).toBeTruthy();
+      expect(gameBoard.shipsOnBoard.get(33).isSunk()).toBeTruthy();
+    });
+
+    test("hit sunked ship", () => {
+      expect(() => gameBoard.receiveAttack(9)).toThrow(
+        "this ship has already been sunked.",
+      );
+      expect(() => gameBoard.receiveAttack(25)).toThrow(
+        "this ship has already been sunked.",
+      );
+    });
+
+    test("invalid input", () => {
+      expect(() => gameBoard.receiveAttack()).toThrow(
+        "'undefined' is not a number.",
+      );
+      expect(() => gameBoard.receiveAttack("9")).toThrow(
+        "'9' is not a number.",
+      );
+      expect(() => gameBoard.receiveAttack(8.5)).toThrow(
+        "8.5 is not a valid coordinate.",
+      );
+    });
+
+    test("missed attack", () => {
+      gameBoard.receiveAttack(8);
+      gameBoard.receiveAttack(21);
+      gameBoard.receiveAttack(11);
+      gameBoard.receiveAttack(15);
+
+      expect(gameBoard.missed.has(8)).toBeTruthy();
+      expect(gameBoard.missed.has(21)).toBeTruthy();
+      expect(gameBoard.missed.has(11)).toBeTruthy();
+      expect(gameBoard.missed.has(15)).toBeTruthy();
+    });
+  });
 });
