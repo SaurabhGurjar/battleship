@@ -51,7 +51,9 @@ export default class Gameboard {
 
   placeShipOnBoard(shipName, start, end, shipLength) {
     if (start > end) {
-      throw new Error("end value must be greater than start value.");
+      throw new Error(
+        `end:${end} value must be greater than start${start} value.`,
+      );
     }
     if (start < 1 || start > this.length || end < 1 || end > this.length) {
       throw new Error("given positions are outside the board.");
@@ -62,7 +64,9 @@ export default class Gameboard {
       start % this.boardWidth > end % this.boardWidth ||
       (start % this.boardWidth === 0 && end % this.boardWidth > 0)
     ) {
-      throw new Error("ship can't be placed at this location.");
+      throw new Error(
+        `ship can't be placed at this location (${start}, ${end}).`,
+      );
     }
     const coords = this._shipPosition(start, end, shipLength);
 
@@ -96,12 +100,7 @@ export default class Gameboard {
   }
 
   allShipSunk() {
-    const ships = new Set(Array.from(this.shipsOnBoard.values()));
-    ships.forEach((ship) => {
-      if (!ship.isSunk()) {
-        return false;
-      }
-    });
-    return true;
+    const ships = Array.from(new Set(Array.from(this.shipsOnBoard.values())));
+    return ships.every((ship) => ship.isSunk());
   }
 }
