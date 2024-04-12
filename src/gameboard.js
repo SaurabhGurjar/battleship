@@ -24,13 +24,34 @@ export default class Gameboard {
       throw new Error("dimensions must be integers.");
     }
     this.shipsOnBoard = new Map();
-    this.missed = new Set();
+    this.shotsHit = new Set();
+    this.shotsMissed = new Set();
     this.boardWidth = width;
     this.boardheight = height;
   }
 
   get length() {
     return this.boardWidth * this.boardheight;
+  }
+
+  get shipLocation() {
+    return this.shipsOnBoard;
+  }
+
+  get hits() {
+    return this.shotsHit;
+  }
+
+  get missed() {
+    return this.shotsMissed;
+  }
+
+  get width() {
+    return this.boardWidth;
+  }
+
+  get height() {
+    return this.boardheight;
   }
 
   _shipPosition(start, end, shipLength) {
@@ -52,11 +73,13 @@ export default class Gameboard {
   placeShipOnBoard(shipName, start, end, shipLength) {
     if (start > end) {
       throw new Error(
-        `end:${end} value must be greater than start${start} value.`,
+        `end(${end}) value must be greater than start(${start}) value.`,
       );
     }
     if (start < 1 || start > this.length || end < 1 || end > this.length) {
-      throw new Error("given positions are outside the board.");
+      throw new Error(
+        `given coordinates(${start}, ${end}) are outside the board.`,
+      );
     }
 
     // Check if the ship reaches the next row of the gameboard.
@@ -65,7 +88,7 @@ export default class Gameboard {
       (start % this.boardWidth === 0 && end % this.boardWidth > 0)
     ) {
       throw new Error(
-        `ship can't be placed at this location (${start}, ${end}).`,
+        `ship can't be placed at this location(${start}, ${end}).`,
       );
     }
     const coords = this._shipPosition(start, end, shipLength);
@@ -73,7 +96,9 @@ export default class Gameboard {
     // Check if the a ship is already placed at these positions.
     coords.forEach((pos) => {
       if (this.shipsOnBoard.has(pos)) {
-        throw new Error("a ship is already placed at these positions.");
+        throw new Error(
+          `a ship is already placed at these coordinates(${start}, ${end}).`,
+        );
       }
     });
 
@@ -90,12 +115,12 @@ export default class Gameboard {
       throw new TypeError(`${coord} is not a valid coordinate.`);
     }
     if (this.shipsOnBoard.has(coord)) {
-      if (this.shipsOnBoard.get(coord).isSunk()) {
-        throw new Error("this ship has already been sunked.");
+      if (!this.shipsOnBoard.get(coord).isSunk() && !this.shotsHit.has(coord)) {
+        this.shipsOnBoard.get(coord).hit();
+        this.shotsHit.add(coord);
       }
-      this.shipsOnBoard.get(coord).hit();
     } else {
-      this.missed.add(coord);
+      this.shotsMissed.add(coord);
     }
   }
 
