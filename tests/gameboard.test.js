@@ -98,50 +98,51 @@ describe("place ship on board", () => {
   test("place ship5", () => {
     [1, 2, 3, 4, 5].forEach((pos) => map.set(pos, ship5));
     gameBoard.placeShipOnBoard(ship5, 1, 5, ship5.length);
-    expect(gameBoard.shipsOnBoard).toEqual(map);
+    expect(gameBoard.shipLocation).toEqual(map);
   });
 
   test("place ship4", () => {
     [9, 17, 25, 33].forEach((pos) => map.set(pos, ship4));
     gameBoard.placeShipOnBoard(ship4, 9, 33, ship4.length);
-    expect(gameBoard.shipsOnBoard).toEqual(map);
+    expect(gameBoard.shipLocation).toEqual(map);
   });
 
   describe("invalid positions", () => {
     test("Error in placing ship4", () => {
       expect(() =>
         gameBoard.placeShipOnBoard(ship4, 2, 26, ship4.length),
-      ).toThrow("a ship is already placed at these positions.");
+      ).toThrow("a ship is already placed at these coordinates(2, 26).");
     });
 
     test("outside the board", () => {
       expect(() =>
         gameBoard.placeShipOnBoard(ship3, 0, 16, ship3.length),
-      ).toThrow("given positions are outside the board.");
+      ).toThrow("given coordinates(0, 16) are outside the board.");
 
       expect(() =>
         gameBoard.placeShipOnBoard(ship3, 63, 65, ship3.length),
-      ).toThrow("given positions are outside the board.");
+      ).toThrow("given coordinates(63, 65) are outside the board.");
 
       expect(() =>
         gameBoard.placeShipOnBoard(ship3, 16, 0, ship3.length),
-      ).toThrow("end value must be greater than start value.");
+      ).toThrow("end(0) value must be greater than start(16) value.");
 
       // Throws an error if the ship reaches the next row.
       expect(() =>
         gameBoard.placeShipOnBoard(ship3, 40, 42, ship3.length),
-      ).toThrow("ship can't be placed at this location.");
+      ).toThrow("ship can't be placed at this location(40, 42).");
 
       expect(() =>
         gameBoard.placeShipOnBoard(ship5, 54, 58, ship5.length),
-      ).toThrow("ship can't be placed at this location.");
+      ).toThrow("ship can't be placed at this location(54, 58).");
     });
   });
 
   describe("receive attack", () => {
     test("ship1 hit", () => {
       gameBoard.receiveAttack(1);
-      expect(gameBoard.shipsOnBoard.get(1).hits).toEqual(1);
+      expect(gameBoard.shipLocation.get(1).hits).toEqual(1);
+      expect(gameBoard.hits.has(1)).toBeTruthy();
     });
 
     test("ship1 hit until it sunk", () => {
@@ -149,32 +150,28 @@ describe("place ship on board", () => {
       gameBoard.receiveAttack(3);
       gameBoard.receiveAttack(4);
       gameBoard.receiveAttack(5);
-      expect(gameBoard.shipsOnBoard.get(1).isSunk()).toBeTruthy();
+      expect(gameBoard.shipLocation.get(1).isSunk()).toBeTruthy();
     });
 
     test("ship4 hit until it sunk", () => {
       gameBoard.receiveAttack(9);
-      expect(gameBoard.shipsOnBoard.get(9).hits).toEqual(1);
+      expect(gameBoard.shipLocation.get(9).hits).toEqual(1);
 
       gameBoard.receiveAttack(17);
-      expect(gameBoard.shipsOnBoard.get(17).hits).toEqual(2);
+      expect(gameBoard.shipLocation.get(17).hits).toEqual(2);
 
       gameBoard.receiveAttack(25);
-      expect(gameBoard.shipsOnBoard.get(25).hits).toEqual(3);
+      expect(gameBoard.shipLocation.get(25).hits).toEqual(3);
 
       gameBoard.receiveAttack(33);
-      expect(gameBoard.shipsOnBoard.get(33).hits).toEqual(4);
-      expect(gameBoard.shipsOnBoard.get(9).isSunk()).toBeTruthy();
-      expect(gameBoard.shipsOnBoard.get(33).isSunk()).toBeTruthy();
+      expect(gameBoard.shipLocation.get(33).hits).toEqual(4);
+      expect(gameBoard.shipLocation.get(9).isSunk()).toBeTruthy();
+      expect(gameBoard.shipLocation.get(33).isSunk()).toBeTruthy();
     });
 
     test("hit sunked ship", () => {
-      expect(() => gameBoard.receiveAttack(9)).toThrow(
-        "this ship has already been sunked.",
-      );
-      expect(() => gameBoard.receiveAttack(25)).toThrow(
-        "this ship has already been sunked.",
-      );
+      gameBoard.receiveAttack(9);
+      expect(gameBoard.shipLocation.get(9).isSunk()).toBeTruthy();
     });
 
     test("invalid input", () => {
@@ -205,6 +202,7 @@ describe("place ship on board", () => {
       test("ships sunked", () => {
         expect(gameBoard.allShipSunk()).toBeTruthy();
       });
+      // TODO: write test to when all ships are not sunk.
     });
   });
 });
