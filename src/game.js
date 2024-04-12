@@ -59,7 +59,6 @@ function placeShips(player, shipsArr) {
 
 function isGameOver(player1, player2) {
   if (player1.board.allShipSunk()) {
-    console.log(player1.board.allShipSunk());
     return true;
   }
 
@@ -89,17 +88,14 @@ function switchTurn(player1, player2) {
 }
 
 function attack(attackCoord, player) {
-  console.log(attackCoord, player.board);
   player.board.receiveAttack(attackCoord);
 }
 
 function gameLoop(userInput, player1, player2) {
   if (isGameOver(player1, player2)) {
-    console.log(userInput);
     return winner(player1, player2);
   } else {
     const player = player1.isTurn ? player1 : player2;
-    console.log(player);
     attack(userInput, player);
     switchTurn(player1, player2);
   }
@@ -113,7 +109,6 @@ export default function game() {
   placeShips(p1, shipCoordsAndLen);
   placeShips(p2, shipCoordsAndLen);
   gameLoop(16, p1, p2);
-  p1.board.receiveAttack(16);
   createUI(p1);
   createUI(p2);
 }
