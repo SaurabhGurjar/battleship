@@ -1,6 +1,27 @@
 import Gameboard from "../src/gameboard";
 import Ship from "../src/ships";
 
+/** 
+ * Representation of a gameboard:
+`[
+   1,  2,  3,  4,  5,  6,  7,  8,
+
+   9, 10, 11, 12, 13, 14, 15, 16,
+
+  17, 18, 19, 20, 21, 22, 23, 24,
+
+  25, 26, 27, 28, 29, 30, 31, 32,
+
+  33, 34, 35, 36, 37, 38, 39, 40,
+  
+  41, 42, 43, 44, 45, 46, 47, 48,
+  
+  49, 50, 51, 52, 53, 54, 55, 56,
+  
+  57, 58, 59, 60, 61, 62, 63, 64,
+  ]`
+*/
+
 describe("create a gameboard", () => {
   test("create a (10 x 10) gameboard", () => {
     const board = new Gameboard(10, 10);
@@ -70,6 +91,7 @@ describe("place ship on board", () => {
   const ship5 = new Ship(5);
   const ship4 = new Ship(4);
   const ship3 = new Ship(3);
+  const ship5_2 = new Ship(5);
   const gameBoard = new Gameboard(8, 8);
   const map = new Map();
 
@@ -85,25 +107,34 @@ describe("place ship on board", () => {
     expect(gameBoard.shipsOnBoard).toEqual(map);
   });
 
-  describe("invalid coordinates", () => {
+  describe("invalid positions", () => {
     test("Error in placing ship4", () => {
       expect(() =>
         gameBoard.placeShipOnBoard(ship4, 2, 26, ship4.length),
-      ).toThrow("a ship is already placed at these coordinates.");
+      ).toThrow("a ship is already placed at these positions.");
     });
 
     test("outside the board", () => {
       expect(() =>
         gameBoard.placeShipOnBoard(ship3, 0, 16, ship3.length),
-      ).toThrow("given coordinates are outside the board.");
+      ).toThrow("given positions are outside the board.");
 
       expect(() =>
         gameBoard.placeShipOnBoard(ship3, 63, 65, ship3.length),
-      ).toThrow("given coordinates are outside the board.");
+      ).toThrow("given positions are outside the board.");
 
       expect(() =>
         gameBoard.placeShipOnBoard(ship3, 16, 0, ship3.length),
       ).toThrow("end value must be greater than start value.");
+
+      // Throws an error if the ship reaches the next row.
+      expect(() =>
+        gameBoard.placeShipOnBoard(ship3, 40, 42, ship3.length),
+      ).toThrow("ship can't be placed at this location.");
+
+      expect(() =>
+        gameBoard.placeShipOnBoard(ship5, 54, 58, ship5.length),
+      ).toThrow("ship can't be placed at this location.");
     });
   });
 
