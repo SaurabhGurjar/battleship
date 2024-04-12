@@ -10,6 +10,11 @@ export default class Player {
     this.name = name;
     this._turn = false;
     this.gameboard = gameBoard;
+    this.shipsPos = new Map();
+  }
+
+  setShipLoc(ship, coords) {
+    this.shipsPos.set(ship, coords);
   }
 
   set turn(bool) {
