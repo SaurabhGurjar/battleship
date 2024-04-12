@@ -36,7 +36,7 @@ export default class Gameboard {
   _shipPosition(start, end, shipLength) {
     const position = [];
 
-    /** Finding difference between start and end coordinates to determine
+    /** Finding difference between start and end positions to determine
      * if the ship is place verticaly or horzontally.
      */
     const coordDiff =
@@ -54,14 +54,22 @@ export default class Gameboard {
       throw new Error("end value must be greater than start value.");
     }
     if (start < 1 || start > this.length || end < 1 || end > this.length) {
-      throw new Error("given coordinates are outside the board.");
+      throw new Error("given positions are outside the board.");
+    }
+
+    // Check if the ship reaches the next row of the gameboard.
+    if (
+      start % this.boardWidth > end % this.boardWidth ||
+      (start % this.boardWidth === 0 && end % this.boardWidth > 0)
+    ) {
+      throw new Error("ship can't be placed at this location.");
     }
     const coords = this._shipPosition(start, end, shipLength);
 
-    // Check if the a ship is already placed at these coordinates.
+    // Check if the a ship is already placed at these positions.
     coords.forEach((pos) => {
       if (this.shipsOnBoard.has(pos)) {
-        throw new Error("a ship is already placed at these coordinates.");
+        throw new Error("a ship is already placed at these positions.");
       }
     });
 
