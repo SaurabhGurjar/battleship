@@ -1,0 +1,71 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#main-c {
+  display: flex;
+  padding: 40px;
+ width: 100vw;
+ height: 100vh;
+ justify-content: center;
+ align-items: center;
+ gap: 20px;
+ flex-wrap: wrap;
+}
+
+.player-c {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  gap: 50px;
+
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.row:last-child {
+  border-bottom: 1px solid #000;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: auto;
+  min-height: 40px;
+  max-width: auto;
+  max-height: 50px;
+  /* gap: 4px; */
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
+}
+
+
+.col {
+  text-align: end;
+  min-width: 40px;
+  min-height: 40px;
+  max-width: 50px;
+  max-height: 50px;
+  border-top: 1px solid #000;
+  border-right: 1px solid #000;
+}
+
+.col:last-child {
+  border-right: none;
+}
+
+.col:hover {
+  background-color: aliceblue;
+}
+
