@@ -4,7 +4,6 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = {
   entry: {
     main: "./src/index.js",
-    vendor: "./src/vendor.js",
   },
   output: {
     filename: "[name].[contenthash].bundle.js",
@@ -35,6 +34,18 @@ module.exports = {
   ],
   module: {
     rules: [
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
+      },
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
       {
         test: /\.(?:js|mjs|cjs)$/,
         exclude: /node_modules/,
