@@ -109,7 +109,5 @@ export default function game() {
   placeShips(p1, shipCoordsAndLen);
   placeShips(p2, shipCoordsAndLen);
   gameLoop(16, p1, p2);
-  createUI(p1);
-  createUI(p2);
-  
+  createUI(p1, p2);  
 }
