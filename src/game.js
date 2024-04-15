@@ -111,4 +111,5 @@ export default function game() {
   gameLoop(16, p1, p2);
   createUI(p1);
   createUI(p2);
+  
 }
