@@ -1,0 +1,140 @@
+@import url("https://fonts.googleapis.com/css2?family=Jersey+15+Charted&family=Jersey+25&family=Micro+5+Charted&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#main-c {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  justify-content: space-between;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+#header {
+  padding: 10px;
+  font-size: 0.8em;
+  width: 100%;
+  text-align: center;
+  background-color: rgb(1, 136, 129, 0.8);
+  h1 {
+    font-family: "Jersey 25", "Micro 5 Charted", "Jersey 15 Charted", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+}
+
+#footer {
+  margin: 20px 0;
+  padding: 10px;
+  font-size: 1em;
+}
+
+.board-c {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4em;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.player-c {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  gap: 20px;
+  h3 {
+    font-size: 3em;
+    font-family: "Jersey 15 Charted", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.cell {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  flex: 1 1 2;
+  width: 3em;
+  height: 3em;
+  border: 1px solid #000;
+  border-radius: 4px;
+  color: rgb(0, 0, 0, 0.5);
+  font-size: 11px;
+  padding: 4px;
+}
+
+.cell:hover {
+  background-color: aliceblue;
+}
+
+.show-ships {
+  border: 2px solid rgb(1, 136, 129) !important;
+  background-color: #018881;
+  color: #fff !important;
+}
+.show-ships:hover {
+  background-color: #018881;
+}
+
+.ships-loc-ctrl-c {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+#modal {
+  padding: 25px;
+}
+@media only screen and (min-width: 600px) {
+  .cell {
+    width: 5em;
+    height: 5em;
+  }
+  .board-c {
+    gap: 8em;
+  }
+  #modal {
+    padding: 30px 60px !important;
+  }
+
+  #header {
+    font-size: 3em;
+    padding: 10px;
+  }
+}
+
+
+/* 
+  Show players turn
+*/
+
+.turn {
+  border-radius: 2px solid rgb(1, 136, 129);
+}

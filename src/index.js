@@ -1,1 +1,3 @@
-console.log("webpack config");
+import "./main.css";
+import game from "./game";
+game();
