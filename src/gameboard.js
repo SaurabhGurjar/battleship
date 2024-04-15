@@ -41,11 +41,9 @@ export default class Gameboard {
      */
     const coordDiff =
       shipLength > 1 ? Math.floor((end - start) / (shipLength - 1)) : 1;
-
     for (let i = start; i <= end; i += coordDiff) {
       position.push(i);
     }
-
     return position;
   }
 
