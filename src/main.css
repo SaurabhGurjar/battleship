@@ -65,6 +65,7 @@
   justify-content: center;
   align-items: center;
   gap: 4px;
+  padding: 8px;
 }
 
 .row {
@@ -128,13 +129,4 @@
     font-size: 3em;
     padding: 10px;
   }
-}
-
-
-/* 
-  Show players turn
-*/
-
-.turn {
-  border-radius: 2px solid rgb(1, 136, 129);
 }
