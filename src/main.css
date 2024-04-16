@@ -18,7 +18,7 @@
 
 #header {
   padding: 10px;
-  font-size: 0.8em;
+  font-size: 2em;
   width: 100%;
   text-align: center;
   background-color: rgb(1, 136, 129, 0.8);
@@ -38,7 +38,7 @@
 .board-c {
   display: flex;
   flex-wrap: wrap;
-  gap: 4em;
+  gap: 2em;
   justify-content: center;
   align-items: center;
   padding: 20px;
@@ -87,6 +87,7 @@
   color: rgb(0, 0, 0, 0.5);
   font-size: 11px;
   padding: 4px;
+  /* background: rgba(169, 243, 218, 0.2); */
 }
 
 .cell:hover {
@@ -113,10 +114,25 @@
 #modal {
   padding: 25px;
 }
+
+#status-indicator-wapper {
+  display: flex;
+  flex: 1 1 auto;
+  justify-content: center;
+  align-items: center;
+  padding: 1em;
+  margin: 1.5em 0 0 0;
+  max-height: 2em;
+  font-size: 20px;
+  color: rgb(1, 136, 129);
+  border: 2px solid rgb(1, 136, 129, 0.8)
+}
+
+
 @media only screen and (min-width: 600px) {
   .cell {
-    width: 5em;
-    height: 5em;
+    width: 4em;
+    height: 4em;
   }
   .board-c {
     gap: 8em;
