@@ -1,50 +1,62 @@
-import { $ } from "./utils/dom-utils";
+import { gameLoop } from "./game";
+import { $, cE } from "./utils/dom-utils";
 import { capitalize } from "./utils/string-utils";
-import { getAttackCoord } from "./utils/ui-utils";
+import { highLightShip } from "./utils/ui-utils";
 
-const p1Name = document.querySelector("#p1-name");
-const p2Name = document.querySelector("#p2-name");
-const p1BoardC = document.querySelector("#p1-c");
-const p2BoardC = document.querySelector("#p2-c");
-
-function highLightShip(player) {
-  const playerId = player.name.split(" ").join("-");
-  const locationsIter = player.gameboard.shipLocation.keys();
-  for (const val of locationsIter) {
-    $(`#${playerId}-${val}`).classList.add("show-ships");
-  }
-}
-
-function createPlayerBoard(player, callback) {
+function createPlayerBoard(boardOwner, otherPlayer) {
   let count = 1;
-  const boardUI = document.createElement("div");
-  boardUI.id = player.name.split(" ").join("-");
+  const boardUI = cE("div");
+  boardUI.id = boardOwner.name.split(" ").join("");
   boardUI.classList.add("board");
-  for (let row = 1; row <= player.board.boardWidth; row++) {
-    const rowDiv = document.createElement("div");
+  for (let row = 1; row <= boardOwner.board.boardWidth; row++) {
+    const rowDiv = cE("div");
     rowDiv.id = `r-${row}`;
     rowDiv.classList.add("row");
 
-    for (let cell = 1; cell <= player.board.boardheight; cell++) {
-      const cellDiv = document.createElement("div");
+    for (let cell = 1; cell <= boardOwner.board.boardheight; cell++) {
+      const cellDiv = cE("div");
       cellDiv.id = `${boardUI.id}-${count}`;
       cellDiv.classList.add("cell");
       cellDiv.dataset.pos = count;
       cellDiv.onclick = () => {
-        callback(cellDiv, player);
-      }
+        /** Check if the player hit the ship so he/she/it can player attack again.
+         *  And make sure the player
+         *  only play ones if he/she/it misses.
+        */
+
+        if (
+          !boardOwner.isTurn &&
+          !boardOwner.board.hit.has(parseInt(cellDiv.dataset.pos)) &&
+          !boardOwner.board.missed.has(parseInt(cellDiv.dataset.pos))
+        ) {
+          gameLoop(cellDiv, boardOwner, otherPlayer);
+        }
+      };
       count++;
       rowDiv.appendChild(cellDiv);
     }
     boardUI.appendChild(rowDiv);
   }
+
   return boardUI;
 }
 
 export default function createUI(player1, player2) {
+  const p1Name = $("#p1-name");
+  const p2Name = $("#p2-name");
+  const p1BoardC = $("#p1-c");
+  const p2BoardC = $("#p2-c");
+
   p1Name.textContent = capitalize(player1.name);
   p2Name.textContent = capitalize(player2.name);
-  p1BoardC.appendChild(createPlayerBoard(player1, getAttackCoord));
-  p2BoardC.appendChild(createPlayerBoard(player2, getAttackCoord));
+
+  // This expression creates the board for player1.
+  const board1 = createPlayerBoard(player1, player2);
+
+  // This expression creates the board for player2.
+  const board2 = createPlayerBoard(player2, player1);
+
+  p1BoardC.appendChild(board1);
+  p2BoardC.appendChild(board2);
   highLightShip(player1);
 }
