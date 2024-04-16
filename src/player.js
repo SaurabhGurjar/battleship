@@ -1,6 +1,6 @@
 import Gameboard from "./gameboard";
 export default class Player {
-  constructor(name, gameBoard) {
+  constructor(name, gameBoard, turn = false) {
     if (typeof name !== "string") {
       throw new TypeError("name must be a string.");
     }
@@ -8,12 +8,12 @@ export default class Player {
       throw new Error("gameboard must be an instances of Gameboard.");
     }
     this.name = name;
-    this._turn = false;
+    this._turn = turn;
     this.gameboard = gameBoard;
   }
 
-  set turn(bool) {
-    this._turn = bool;
+  toggleTurn() {
+    this._turn = this._turn ? false : true;
   }
 
   get isTurn() {
