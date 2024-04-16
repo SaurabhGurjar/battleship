@@ -119,4 +119,5 @@ export default function game() {
   createUI(p1, p2);
   manageTurn(p1, p2);
   gameLoop(null, p1, p2);
+  showGameStatus(capitalize(`${p1.name} attack`));
 }
