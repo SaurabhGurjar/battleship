@@ -22,7 +22,7 @@ function createPlayerBoard(boardOwner, otherPlayer) {
         /** Check if the player hit the ship so he/she/it can player attack again.
          *  And make sure the player
          *  only play ones if he/she/it misses.
-        */
+         */
 
         if (
           !boardOwner.isTurn &&

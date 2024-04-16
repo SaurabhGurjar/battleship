@@ -11,6 +11,10 @@ export function highLightShip(player) {
   }
 }
 
+export function showGameStatus(status) {
+  $("#gsit").textContent = status;
+}
+
 export function manageTurn(player1, player2) {
   console.log(player1.name, player1.isTurn, player2.name, player2.isTurn);
   if (player1.isTurn) {

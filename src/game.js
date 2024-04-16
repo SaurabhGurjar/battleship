@@ -2,7 +2,8 @@ import Ship from "./ships";
 import Player from "./player";
 import Gameboard from "./gameboard";
 import createUI from "./createUI";
-import { getAttackCoord, manageTurn } from "./utils/ui-utils";
+import { getAttackCoord, manageTurn, showGameStatus } from "./utils/ui-utils";
+import { capitalize } from "./utils/string-utils";
 
 const shipCoordsAndLen = [
   {
@@ -88,10 +89,15 @@ function attack(cell, player1, player2) {
 }
 
 export function gameLoop(cell, player1, player2) {
+  let gameStatus = '';
   if (cell) {
     attack(cell, player1, player2);
     if (isGameOver(player1, player2)) {
-      console.log(winner(player1, player2).name);
+      gameStatus = `${capitalize(winner(player1, player2).name)} sunk the 
+        ${capitalize(
+          player1.board.allShipSunk() ? player1.name : player2.name,
+        )}'s fleet.`;
+      showGameStatus(gameStatus);
       return;
     }
     const player = player1.isTurn ? player1 : player2;
@@ -99,6 +105,8 @@ export function gameLoop(cell, player1, player2) {
       switchTurn(player1, player2);
     }
     manageTurn(player1, player2);
+    gameStatus = capitalize(`${player1.isTurn ? player1.name : player2.name} attack`);
+    showGameStatus(gameStatus)
   }
 }
 
