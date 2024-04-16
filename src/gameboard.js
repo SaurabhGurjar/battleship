@@ -38,7 +38,7 @@ export default class Gameboard {
     return this.shipsOnBoard;
   }
 
-  get hits() {
+  get hit() {
     return this.shotsHit;
   }
 
