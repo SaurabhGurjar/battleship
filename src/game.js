@@ -2,6 +2,7 @@ import Ship from "./ships";
 import Player from "./player";
 import Gameboard from "./gameboard";
 import createUI from "./createUI";
+import { getAttackCoord, manageTurn } from "./utils/ui-utils";
 
 const shipCoordsAndLen = [
   {
@@ -78,36 +79,36 @@ function winner(player1, player2) {
 }
 
 function switchTurn(player1, player2) {
-  if (player1.isTurn) {
-    player1.turn = false;
-    player2.turn = true;
-  } else {
-    player1.turn = true;
-    player2.turn = false;
-  }
+  player1.toggleTurn();
+  player2.toggleTurn();
 }
 
-function attack(attackCoord, player) {
-  player.board.receiveAttack(attackCoord);
+function attack(cell, player1, player2) {
+  getAttackCoord(cell, player1, player2);
 }
 
-function gameLoop(userInput, player1, player2) {
-  if (isGameOver(player1, player2)) {
-    return winner(player1, player2);
-  } else {
+export function gameLoop(cell, player1, player2) {
+  if (cell) {
+    attack(cell, player1, player2);
+    if (isGameOver(player1, player2)) {
+      console.log(winner(player1, player2).name);
+      return;
+    }
     const player = player1.isTurn ? player1 : player2;
-    attack(userInput, player);
-    switchTurn(player1, player2);
+    if (!player.board.shipLocation.has(parseInt(cell.dataset.pos))) {
+      switchTurn(player1, player2);
+    }
+    manageTurn(player1, player2);
   }
 }
 
 export default function game() {
-  const p1 = new Player("player 1", new Gameboard(8, 8));
+  const p1 = new Player("player 1", new Gameboard(8, 8), true);
   const p2 = new Player("player 2", new Gameboard(8, 8));
-  p1.turn = true;
 
   placeShips(p1, shipCoordsAndLen);
   placeShips(p2, shipCoordsAndLen);
-  gameLoop(16, p1, p2);
-  createUI(p1, p2);  
+  createUI(p1, p2);
+  manageTurn(p1, p2);
+  gameLoop(null, p1, p2);
 }
