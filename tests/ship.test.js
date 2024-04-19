@@ -2,32 +2,36 @@ import Ship from "../src/ships";
 
 describe("create a ship", () => {
   const ship1 = {
+    start: null,
+    end: null,
     length: 1,
     hits: 0,
   };
-  const ship5 = {
-    length: 5,
+  const ship4 = {
+    start: null,
+    end: null,
+    length: 4,
     hits: 0,
   };
   test("ship of length -1", () => {
-    expect(() => new Ship(0)).toThrow(
-      `ship's length must be less than 6 and greater than 0.`,
+    expect(() => new Ship(-1)).toThrow(
+      `ship's length must be less than or equal to ${Ship.SHIP_MAX_LENGTH} and greater than 0.`,
     );
   });
   test("ship of length one", () => {
     expect(new Ship(1)).toEqual(ship1);
   });
   test("ship of length five", () => {
-    expect(new Ship(5)).toEqual(ship5);
+    expect(new Ship(4)).toEqual(ship4);
   });
   test("ship of length six", () => {
     expect(() => new Ship(6)).toThrow(
-      `ship's length must be less than 6 and greater than 0.`,
+      `ship's length must be less than or equal to ${Ship.SHIP_MAX_LENGTH} and greater than 0.`,
     );
   });
   test("ship of length zero", () => {
     expect(() => new Ship(0)).toThrow(
-      `ship's length must be less than 6 and greater than 0.`,
+      `ship's length must be less than or equal to ${Ship.SHIP_MAX_LENGTH} and greater than 0.`,
     );
   });
   describe("invalid length value", () => {

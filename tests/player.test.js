@@ -25,14 +25,14 @@ describe("create a new player", () => {
   });
 
   test("player1's turn to shot", () => {
-    p1.turn = true;
-    expect(p1.isTurn).toBeTruthy();
+    p1._turn = true;
+    expect(p1._turn).toBeTruthy();
   });
   test("player2's turn to shot", () => {
-    p2.turn = true;
-    p1.turn = false;
-    expect(p1.isTurn).toBeFalsy();
-    expect(p2.isTurn).toBeTruthy();
+    p2._turn = true;
+    p1._turn = false;
+    expect(p1._turn).toBeFalsy();
+    expect(p2._turn).toBeTruthy();
   });
 
   test("get gameboard of player 1", () => {

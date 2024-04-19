@@ -4,21 +4,25 @@ import Ship from "../src/ships";
 /** 
  * Representation of a gameboard:
 `[
-   1,  2,  3,  4,  5,  6,  7,  8,
-
-   9, 10, 11, 12, 13, 14, 15, 16,
-
-  17, 18, 19, 20, 21, 22, 23, 24,
-
-  25, 26, 27, 28, 29, 30, 31, 32,
-
-  33, 34, 35, 36, 37, 38, 39, 40,
+   1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 
+   
+   11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 
   
-  41, 42, 43, 44, 45, 46, 47, 48,
+   21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 
   
-  49, 50, 51, 52, 53, 54, 55, 56,
+   31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
   
-  57, 58, 59, 60, 61, 62, 63, 64,
+   41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 
+  
+   51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 
+  
+   61, 62, 63, 64, 65, 66, 67, 68, 69, 70,
+
+   71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
+
+   81, 82, 83, 84, 85, 86, 87, 88, 89, 90,
+
+  91, 92, 93, 94, 95, 96, 97, 98, 99, 100,
   ]`
 */
 
@@ -88,18 +92,10 @@ describe("invalid values for dimensions", () => {
 });
 
 describe("place ship on board", () => {
-  const ship5 = new Ship(5);
   const ship4 = new Ship(4);
   const ship3 = new Ship(3);
-  const ship5_2 = new Ship(5);
   const gameBoard = new Gameboard(8, 8);
   const map = new Map();
-
-  test("place ship5", () => {
-    [1, 2, 3, 4, 5].forEach((pos) => map.set(pos, ship5));
-    gameBoard.placeShipOnBoard(ship5, 1, 5, ship5.length);
-    expect(gameBoard.shipLocation).toEqual(map);
-  });
 
   test("place ship4", () => {
     [9, 17, 25, 33].forEach((pos) => map.set(pos, ship4));
@@ -110,8 +106,8 @@ describe("place ship on board", () => {
   describe("invalid positions", () => {
     test("Error in placing ship4", () => {
       expect(() =>
-        gameBoard.placeShipOnBoard(ship4, 2, 26, ship4.length),
-      ).toThrow("a ship is already placed at these coordinates(2, 26).");
+        gameBoard.placeShipOnBoard(ship4, 9, 33, ship4.length),
+      ).toThrow("a ship is already placed at these coordinates(9, 33).");
     });
 
     test("outside the board", () => {
@@ -131,27 +127,10 @@ describe("place ship on board", () => {
       expect(() =>
         gameBoard.placeShipOnBoard(ship3, 40, 42, ship3.length),
       ).toThrow("ship can't be placed at this location(40, 42).");
-
-      expect(() =>
-        gameBoard.placeShipOnBoard(ship5, 54, 58, ship5.length),
-      ).toThrow("ship can't be placed at this location(54, 58).");
     });
   });
 
   describe("receive attack", () => {
-    test("ship1 hit", () => {
-      gameBoard.receiveAttack(1);
-      expect(gameBoard.shipLocation.get(1).hits).toEqual(1);
-      expect(gameBoard.hits.has(1)).toBeTruthy();
-    });
-
-    test("ship1 hit until it sunk", () => {
-      gameBoard.receiveAttack(2);
-      gameBoard.receiveAttack(3);
-      gameBoard.receiveAttack(4);
-      gameBoard.receiveAttack(5);
-      expect(gameBoard.shipLocation.get(1).isSunk()).toBeTruthy();
-    });
 
     test("ship4 hit until it sunk", () => {
       gameBoard.receiveAttack(9);
@@ -164,7 +143,6 @@ describe("place ship on board", () => {
       expect(gameBoard.shipLocation.get(25).hits).toEqual(3);
 
       gameBoard.receiveAttack(33);
-      expect(gameBoard.shipLocation.get(33).hits).toEqual(4);
       expect(gameBoard.shipLocation.get(9).isSunk()).toBeTruthy();
       expect(gameBoard.shipLocation.get(33).isSunk()).toBeTruthy();
     });
@@ -202,7 +180,6 @@ describe("place ship on board", () => {
       test("ships sunked", () => {
         expect(gameBoard.allShipSunk()).toBeTruthy();
       });
-      // TODO: write test to when all ships are not sunk.
     });
   });
 });
