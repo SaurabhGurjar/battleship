@@ -38,7 +38,8 @@ function createPlayerBoard(id, boardOwner, otherPlayer, shipIndex, fleet) {
           const ship = selectShipToPlaceOnBoard(fleet, shipIndex);
           if (ship) {
             if (ship.start) {
-              if (parseInt(cellDiv.dataset.pos) === ship.start) { // Remove current ship if ship's start coordinate clicked 2 times.
+              if (parseInt(cellDiv.dataset.pos) === ship.start) {
+                // Remove current ship if ship's start coordinate clicked 2 times.
                 ship.start = null;
                 removeSecondValidCoordOnBoard(cellDiv, boardOwner.gameboard);
               } else {
@@ -93,7 +94,7 @@ function createPlayerBoard(id, boardOwner, otherPlayer, shipIndex, fleet) {
            */
           !boardOwner.isTurn &&
           !boardOwner.board.hit.has(parseInt(cellDiv.dataset.pos)) &&
-          !boardOwner.board.missed.has(parseInt(cellDiv.dataset.pos)) && 
+          !boardOwner.board.missed.has(parseInt(cellDiv.dataset.pos)) &&
           boardOwner.board.shipLocation.size > 0
         ) {
           gameLoop(cellDiv, boardOwner, otherPlayer);
