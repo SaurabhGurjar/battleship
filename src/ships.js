@@ -16,7 +16,7 @@ export default class Ship {
 
     if (length > Ship.SHIP_MAX_LENGTH || length <= 0) {
       throw new Error(
-        `the ship's length must be less than ${Ship.SHIP_MAX_LENGTH} and greater than 0.`,
+        `the ship's length must be less than or equal to ${Ship.SHIP_MAX_LENGTH} and greater than 0.`,
       );
     }
 
