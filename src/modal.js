@@ -1,6 +1,14 @@
+import { placeFleet } from "./game";
 import { cE } from "./utils/dom-utils";
+import { randomlyPlaceFleet } from "./utils/game-utils";
 import { capitalize, createId } from "./utils/string-utils";
-import { highLightShip, resetBoardUI } from "./utils/ui-utils";
+import {
+  highLightShip,
+  highLightShipOnModal,
+  resetBoardUI,
+  resetModalBoard,
+} from "./utils/ui-utils";
+import { $ } from "./utils/dom-utils";
 
 export default function modal(id, owner, other, shipIndex, fleet, createBoard) {
   const overlayDiv = cE("div");
@@ -112,6 +120,21 @@ export default function modal(id, owner, other, shipIndex, fleet, createBoard) {
 
   doneBtn.onclick = () => {
     overlayDiv.remove();
+    highLightShip(owner);
+  };
+
+  randomizeBtn.onclick = () => {
+    resetModalBoard(owner);
+    owner.gameboard.shipLocation.clear();
+    placeFleet(owner, randomlyPlaceFleet());
+    highLightShipOnModal(owner);
+    const doneBtn = $("#done-btn");
+    const cancelBtn = $("#cancel-btn");
+    doneBtn.disabled = false;
+    doneBtn.style.backgroundColor = "#018881";
+    doneBtn.style.color = "#fff";
+    cancelBtn.style.backgroundColor = "";
+    cancelBtn.style.color = "#000";
   };
 
   cancelBtn.onclick = () => {
