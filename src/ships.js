@@ -1,6 +1,6 @@
 export default class Ship {
   // Maximum allowed length for a ship
-  static SHIP_MAX_LENGTH = 6;
+  static SHIP_MAX_LENGTH = 4;
 
   // Constructs a ship object
   constructor(length) {
@@ -14,7 +14,7 @@ export default class Ship {
       );
     }
 
-    if (length >= Ship.SHIP_MAX_LENGTH || length <= 0) {
+    if (length > Ship.SHIP_MAX_LENGTH || length <= 0) {
       throw new Error(
         `the ship's length must be less than ${Ship.SHIP_MAX_LENGTH} and greater than 0.`,
       );
@@ -22,12 +22,25 @@ export default class Ship {
 
     this.length = length;
     this.hits = 0;
+    this.start = null;
+    this.end = null;
   }
 
   hit() {
     if (this.hits < this.length) {
       this.hits += 1;
     }
+  }
+
+  setStart(pos) {
+    this.start = parseInt(pos);
+    if (this.length === 1) {
+      this.end = this.start;
+    }
+  }
+
+  setEnd(pos) {
+    this.end = parseInt(pos);
   }
 
   isSunk() {
