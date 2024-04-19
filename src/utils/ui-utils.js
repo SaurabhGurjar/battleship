@@ -16,7 +16,7 @@ export function highLightShip(player) {
 export function resetBoardUI(player) {
   const boardLen = player.gameboard.length;
   for (let i = 1; i <= boardLen; i++) {
-    $(`#${createId(player.name)}-${i}`).classList.remove("show-ships");  
+    $(`#${createId(player.name)}-${i}`).classList.remove("show-ships");
   }
 }
 
@@ -50,7 +50,7 @@ function placeAShip(ship, board, start, end) {
   }
 }
 
-function noShipAround(coord, board) {
+export function noShipAround(coord, board) {
   const inVaildPositions = [
     1,
     board.boardWidth,
@@ -109,7 +109,7 @@ export function isStartCoordValid(coord, ship, board) {
   );
 }
 
-function shipValidPos(pos, ship, board) {
+export function shipValidPos(pos, ship, board) {
   const horizontalPos =
     parseInt(pos) + ship.length - 1 > board.length ||
     (parseInt(pos) % board.boardWidth === 0 &&
@@ -156,12 +156,20 @@ function showValidCoordOnModalBaord(cell, posObj) {
   }
 }
 
-function highLightShipOnModal(cell, board) {
-  const cellId = cell.id.split("-").slice(0, 2).join("-");
-  const placedShip = board.shipLocation;
+export function highLightShipOnModal(player) {
+  const cellId = `m-${createId(player.name)}`;
+  const placedShip = player.gameboard.shipLocation;
   const locationsIter = placedShip.keys();
   for (const val of locationsIter) {
     $(`#${cellId}-${val}`).classList.add("show-ships");
+  }
+}
+
+export function resetModalBoard(player) {
+  const cellId = `#m-${createId(player.name)}`;
+  const boardLen = player.gameboard.length;
+  for (let i = 1; i < boardLen; i++) {
+    $(`${cellId}-${i}`).classList.remove("show-ships");
   }
 }
 
@@ -173,7 +181,7 @@ export function registerClickOnModal(player, cell, ship, fleet, shipIndex) {
       ship.setEnd(parseInt(cell.dataset.pos));
       placeAShip(ship, player.gameboard, ship.start, ship.end);
       highLightShip(player);
-      highLightShipOnModal(cell, player.gameboard);
+      highLightShipOnModal(player);
       removeSecondValidCoordOnBoard(cell, player.gameboard);
       showSelectedShip(player, selectShipToPlaceOnBoard(fleet, shipIndex));
     } else {
@@ -245,5 +253,4 @@ export function getAttackCoord(cell, player1, player2) {
   if ($("modal-overlay") !== null) return;
   player1.gameboard.receiveAttack(parseInt(cell.dataset.pos));
   showAttackedLoc(cell, player1, player2);
-  createFleet();
 }
