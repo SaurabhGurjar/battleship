@@ -72,7 +72,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 }
 
 .cell {
@@ -86,7 +86,7 @@
   border-radius: 4px;
   color: rgb(0, 0, 0, 0.5);
   font-size: 11px;
-  padding: 4px;
+  padding: 1em;
   /* background: rgba(169, 243, 218, 0.2); */
 }
 
@@ -112,7 +112,7 @@
 }
 
 #modal {
-  padding: 25px;
+  padding: 4px;
 }
 
 #status-indicator-wapper {
@@ -125,9 +125,8 @@
   max-height: 2em;
   font-size: 20px;
   color: rgb(1, 136, 129);
-  border: 2px solid rgb(1, 136, 129, 0.8)
+  border: 2px solid rgb(1, 136, 129, 0.8);
 }
-
 
 @media only screen and (min-width: 600px) {
   .cell {
@@ -144,5 +143,24 @@
   #header {
     font-size: 3em;
     padding: 10px;
+  }
+}
+
+/* Modal */
+.selected-ship-display-container {
+  display: flex;
+  gap: 1em;
+  font-size: 18px;
+}
+.modal-ship-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .ship-box {
+    width: 1em;
+    height: 1em;
+    background-color: rgb(1, 136, 129, 0.5);
+    border: 1px solid #018881;
   }
 }
