@@ -68,7 +68,7 @@ export default class Gameboard {
     return position;
   }
 
-  placeShipOnBoard(shipName, start, end, shipLength) {
+  placeShipOnBoard(ship, start, end, shipLength) {
     if (start > end) {
       throw new Error(
         `end(${end}) value must be greater than start(${start}) value.`,
@@ -82,7 +82,8 @@ export default class Gameboard {
 
     // Check if the ship reaches the next row of the gameboard.
     if (
-      start % this.boardWidth > end % this.boardWidth ||
+      (start % this.boardWidth > end % this.boardWidth &&
+        end % this.boardWidth > 0) ||
       (start % this.boardWidth === 0 && end % this.boardWidth > 0)
     ) {
       throw new Error(
@@ -101,7 +102,7 @@ export default class Gameboard {
     });
 
     coords.forEach((pos) => {
-      this.shipsOnBoard.set(pos, shipName);
+      this.shipsOnBoard.set(pos, ship);
     });
   }
 
