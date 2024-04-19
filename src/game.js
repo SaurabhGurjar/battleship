@@ -2,9 +2,16 @@ import Ship from "./ships";
 import Player from "./player";
 import Gameboard from "./gameboard";
 import createUI from "./createUI";
-import { getAttackCoord, manageTurn, showGameStatus } from "./utils/ui-utils";
+import {
+  createFleet,
+  getAttackCoord,
+  manageTurn,
+  selectShipToPlaceOnBoard,
+  showGameStatus,
+  showSelectShip,
+} from "./utils/ui-utils";
 import { capitalize } from "./utils/string-utils";
-
+import modal from "./modal";
 const shipCoordsAndLen = [
   {
     start: 9,
@@ -89,7 +96,7 @@ function attack(cell, player1, player2) {
 }
 
 export function gameLoop(cell, player1, player2) {
-  let gameStatus = '';
+  let gameStatus = "";
   if (cell) {
     attack(cell, player1, player2);
     if (isGameOver(player1, player2)) {
@@ -105,17 +112,19 @@ export function gameLoop(cell, player1, player2) {
       switchTurn(player1, player2);
     }
     manageTurn(player1, player2);
-    gameStatus = capitalize(`${player1.isTurn ? player1.name : player2.name} attack`);
-    showGameStatus(gameStatus)
+    gameStatus = capitalize(
+      `${player1.isTurn ? player1.name : player2.name} attack`,
+    );
+    showGameStatus(gameStatus);
   }
 }
 
 export default function game() {
-  const p1 = new Player("player 1", new Gameboard(8, 8), true);
-  const p2 = new Player("player 2", new Gameboard(8, 8));
+  const p1 = new Player("player 1", new Gameboard(10, 10), true);
+  const p2 = new Player("player 2", new Gameboard(10, 10));
 
-  placeShips(p1, shipCoordsAndLen);
-  placeShips(p2, shipCoordsAndLen);
+  // placeShips(p1, shipCoordsAndLen);
+  // placeShips(p2, shipCoordsAndLen);
   createUI(p1, p2);
   manageTurn(p1, p2);
   gameLoop(null, p1, p2);
