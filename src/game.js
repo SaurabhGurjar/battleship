@@ -1,68 +1,18 @@
-import Ship from "./ships";
 import Player from "./player";
 import Gameboard from "./gameboard";
 import createUI from "./createUI";
 import {
-  createFleet,
   getAttackCoord,
+  highLightShip,
   manageTurn,
-  selectShipToPlaceOnBoard,
   showGameStatus,
-  showSelectShip,
 } from "./utils/ui-utils";
 import { capitalize } from "./utils/string-utils";
-import modal from "./modal";
-const shipCoordsAndLen = [
-  {
-    start: 9,
-    end: 41,
-    shipLen: 5,
-  },
-  {
-    start: 23,
-    end: 47,
-    shipLen: 4,
-  },
-  {
-    start: 4,
-    end: 28,
-    shipLen: 3,
-  },
-  {
-    start: 12,
-    end: 13,
-    shipLen: 2,
-  },
-  {
-    start: 29,
-    end: 29,
-    shipLen: 1,
-  },
-  {
-    start: 53,
-    end: 53,
-    shipLen: 1,
-  },
-  {
-    start: 59,
-    end: 59,
-    shipLen: 1,
-  },
-  {
-    start: 3,
-    end: 3,
-    shipLen: 1,
-  },
-];
+import { randomlyPlaceFleet } from "./utils/game-utils";
 
-function placeShips(player, shipsArr) {
-  shipsArr.forEach((ship) => {
-    player.board.placeShipOnBoard(
-      new Ship(ship.shipLen),
-      ship.start,
-      ship.end,
-      ship.shipLen,
-    );
+export function placeFleet(player, fleet) {
+  fleet.forEach((ship) => {
+    player.board.placeShipOnBoard(ship, ship.start, ship.end, ship.length);
   });
 }
 
@@ -124,7 +74,7 @@ export default function game() {
   const p2 = new Player("player 2", new Gameboard(10, 10));
 
   // placeShips(p1, shipCoordsAndLen);
-  // placeShips(p2, shipCoordsAndLen);
+  placeFleet(p2, randomlyPlaceFleet());
   createUI(p1, p2);
   manageTurn(p1, p2);
   gameLoop(null, p1, p2);
