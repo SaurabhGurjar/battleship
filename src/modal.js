@@ -1,7 +1,8 @@
 import { cE } from "./utils/dom-utils";
-import { capitalize } from "./utils/string-utils";
+import { capitalize, createId } from "./utils/string-utils";
+import { highLightShip, resetBoardUI } from "./utils/ui-utils";
 
-export default function modal(fn, player) {
+export default function modal(id, owner, other, shipIndex, fleet, createBoard) {
   const overlayDiv = cE("div");
   overlayDiv.id = "modal-overlay";
   overlayDiv.style = `
@@ -45,67 +46,88 @@ export default function modal(fn, player) {
 
   // Modal header
   const h1 = cE("h1");
-  h1.textContent = capitalize(player.name);
+  h1.id = "board-heading";
+  h1.textContent = `${capitalize(owner.name)}'s board`;
+  const displayDiv = cE("div");
+  displayDiv.classList.add("selected-ship-display-container");
+  const text = cE("span");
+  text.textContent = "Ship";
+  displayDiv.append(text);
 
-  // Ship location setter widget
-  const widgetDiv = cE("div");
-  widgetDiv.innerHTML = `
-    <div class="ships-loc-ctrl-c">
-        <select name="ship" id="ship-n">
-            <option value="ship-a">Ship A</option>
-            <option value="ship-b">Ship B</option>
-            <option value="ship-c">Ship C</option>
-            <option value="ship-d">Ship D</option>
-            <option value="ship-e">Ship E</option>
-            <option value="ship-f">Ship F</option>
-            <option value="ship-g">Ship G</option>
-            <option value="ship-h">Ship H</option>
-        </select>
-        <button class="place">Place</button>
-    </div>
-    `;
+  const shipContainer = cE("div");
+  shipContainer.id = `m-${createId(owner.name)}-spc`;
+  shipContainer.classList.add("modal-ship-container");
+  displayDiv.appendChild(shipContainer);
 
   // Player board
   const boardCDiv = cE("div");
-  boardCDiv.appendChild(fn(player));
+  boardCDiv.appendChild(createBoard(id, owner, other, shipIndex, fleet));
+
+  // Button container
+  const btnContDiv = cE("div");
+  btnContDiv.style = `
+     display: flex;
+     flex: 1 1 auto;
+     padding: .5em;
+     justify-content: center;
+     align-items: center;
+     gap: 1em;
+     width: 100%;
+  `;
+  const btnStyle = `
+  width: 100%;
+  font-size: 14px;
+  height: 3em;
+  border: 1px solid rgb(0, 0, 0, 0.5);
+  border-radius: 4px;
+  `;
+  // Randomize button
+  const randomizeBtn = cE("button");
+  randomizeBtn.id = "random-btn";
+  randomizeBtn.textContent = "Randomize";
+  randomizeBtn.style = `
+    ${btnStyle}
+    background-color: #97b6bc;
+  `;
 
   // Done button
   const doneBtn = cE("button");
   doneBtn.id = "done-btn";
   doneBtn.textContent = "Done";
+  doneBtn.disabled = "true";
   doneBtn.style = `
-        width: 100%;
-        font-size: 14px;
-        height: 3em;
-        border: 1px solid rgb(0, 0, 0, 0.5);
-        margin-top: 20px;
-        background: none;
-    `;
+    ${btnStyle}
+    background: none;
+  `;
 
   // cancel button
   const cancelBtn = cE("button");
   cancelBtn.id = "cancel-btn";
   cancelBtn.textContent = "Cancel";
   cancelBtn.style = `
-        font-size: 14px;
-        width: 100%;
-        height: 3em;
-        border: 1px solid rgb(0, 0, 0, 0.5);
-        border-radius: 4px;
-        background-color: #018881;
-        color: #fff;
-    `;
+    ${btnStyle}
+    background-color: #018881;
+    color: #fff;
+  `;
+
+  doneBtn.onclick = () => {
+    overlayDiv.remove();
+  };
 
   cancelBtn.onclick = () => {
-    console.log("cancel");
+    const board = owner.gameboard;
+    board.shipLocation.clear();
+    resetBoardUI(owner);
     overlayDiv.remove();
   };
 
   modalDiv.appendChild(h1);
-  modalDiv.appendChild(widgetDiv);
+  modalDiv.appendChild(displayDiv);
   modalDiv.appendChild(boardCDiv);
-  modalDiv.appendChild(doneBtn);
-  modalDiv.appendChild(cancelBtn);
+  btnContDiv.appendChild(cancelBtn);
+  btnContDiv.appendChild(randomizeBtn);
+  btnContDiv.appendChild(doneBtn);
+  modalDiv.appendChild(btnContDiv);
   overlayDiv.appendChild(modalDiv);
   return overlayDiv;
 }
