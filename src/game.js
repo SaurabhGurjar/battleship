@@ -3,7 +3,6 @@ import Gameboard from "./gameboard";
 import createUI from "./createUI";
 import {
   getAttackCoord,
-  highLightShip,
   manageTurn,
   showGameStatus,
 } from "./utils/ui-utils";
@@ -57,8 +56,7 @@ export function gameLoop(cell, attacker, receiver) {
       showGameStatus(gameStatus);
       return;
     }
-    if (!(attacker.board.shipLocation.has(parseInt(cell.dataset.pos)))) {
-      console.log(attacker.board.shipLocation.has(parseInt(cell.dataset.pos)));
+    if (!attacker.board.shipLocation.has(parseInt(cell.dataset.pos))) {
       switchTurn(attacker, receiver);
       manageTurn(attacker, receiver);
     }
