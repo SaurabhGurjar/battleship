@@ -1,5 +1,6 @@
 import { gameLoop } from "./game";
 import modal from "./modal";
+import { autoplay } from "./utils/autoplay";
 import { $, cE } from "./utils/dom-utils";
 import { capitalize, createId } from "./utils/string-utils";
 import {
@@ -32,7 +33,7 @@ function createPlayerBoard(id, boardOwner, otherPlayer, shipIndex, fleet) {
       cellDiv.id = `${boardUI.id}-${count}`;
       cellDiv.classList.add("cell");
       cellDiv.dataset.pos = count;
-      cellDiv.onclick = () => {
+      cellDiv.onclick = (e) => {
         // Modal eventListener
         if ($("#modal-overlay")) {
           const ship = selectShipToPlaceOnBoard(fleet, shipIndex);
@@ -87,17 +88,24 @@ function createPlayerBoard(id, boardOwner, otherPlayer, shipIndex, fleet) {
               registerClickOnModal(boardOwner, cellDiv, ship, fleet, shipIndex);
             }
           }
-        } 
-        
+        }
+
+        // Game board event listener.
         // Check if the player have aleady played on the current location.
         if (
           !boardOwner.isTurn &&
           !boardOwner.board.hit.has(parseInt(cellDiv.dataset.pos)) &&
           !boardOwner.board.missed.has(parseInt(cellDiv.dataset.pos)) &&
-          (boardOwner.board.shipLocation.size > 0 && otherPlayer.board.shipLocation.size > 0) && 
+          boardOwner.board.shipLocation.size > 0 &&
+          otherPlayer.board.shipLocation.size > 0 &&
           !boardOwner.board.allShipSunk()
         ) {
+          // Prevent mouse click on the player 1 board.
+          if (boardOwner.name === "player 1" && e.pointerId > 0) {
+            return;
+          }
           gameLoop(cellDiv, boardOwner, otherPlayer);
+          autoplay(boardOwner, otherPlayer);
         }
       };
       count++;
