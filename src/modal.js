@@ -55,7 +55,7 @@ export default function modal(id, owner, other, shipIndex, fleet, createBoard) {
   // Modal header
   const h1 = cE("h1");
   h1.id = "board-heading";
-  h1.textContent = `${capitalize(owner.name)}'s board`;
+  h1.textContent = `${capitalize(owner.name)} place your fleet.`;
   const displayDiv = cE("div");
   displayDiv.classList.add("selected-ship-display-container");
   const text = cE("span");
