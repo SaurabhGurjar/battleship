@@ -87,15 +87,15 @@ function createPlayerBoard(id, boardOwner, otherPlayer, shipIndex, fleet) {
               registerClickOnModal(boardOwner, cellDiv, ship, fleet, shipIndex);
             }
           }
-        } else if (
-          /** Check if the player hit the ship so he/she/it can player attack again.
-           *  And make sure the player
-           *  only play ones if he/she/it misses.
-           */
+        } 
+        
+        // Check if the player have aleady played on the current location.
+        if (
           !boardOwner.isTurn &&
           !boardOwner.board.hit.has(parseInt(cellDiv.dataset.pos)) &&
           !boardOwner.board.missed.has(parseInt(cellDiv.dataset.pos)) &&
-          boardOwner.board.shipLocation.size > 0
+          (boardOwner.board.shipLocation.size > 0 && otherPlayer.board.shipLocation.size > 0) && 
+          !boardOwner.board.allShipSunk()
         ) {
           gameLoop(cellDiv, boardOwner, otherPlayer);
         }

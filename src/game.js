@@ -45,25 +45,25 @@ function attack(cell, player1, player2) {
   getAttackCoord(cell, player1, player2);
 }
 
-export function gameLoop(cell, player1, player2) {
+export function gameLoop(cell, attacker, receiver) {
   let gameStatus = "";
   if (cell) {
-    attack(cell, player1, player2);
-    if (isGameOver(player1, player2)) {
-      gameStatus = `${capitalize(winner(player1, player2).name)} sunk the 
+    attack(cell, attacker, receiver);
+    if (isGameOver(attacker, receiver)) {
+      gameStatus = `${capitalize(winner(attacker, receiver).name)} sank the 
         ${capitalize(
-          player1.board.allShipSunk() ? player1.name : player2.name,
+          attacker.board.allShipSunk() ? attacker.name : receiver.name,
         )}'s fleet.`;
       showGameStatus(gameStatus);
       return;
     }
-    const player = player1.isTurn ? player1 : player2;
-    if (!player.board.shipLocation.has(parseInt(cell.dataset.pos))) {
-      switchTurn(player1, player2);
+    if (!(attacker.board.shipLocation.has(parseInt(cell.dataset.pos)))) {
+      console.log(attacker.board.shipLocation.has(parseInt(cell.dataset.pos)));
+      switchTurn(attacker, receiver);
+      manageTurn(attacker, receiver);
     }
-    manageTurn(player1, player2);
     gameStatus = capitalize(
-      `${player1.isTurn ? player1.name : player2.name} attack`,
+      `${attacker.isTurn ? attacker.name : receiver.name} attack`,
     );
     showGameStatus(gameStatus);
   }
@@ -73,7 +73,6 @@ export default function game() {
   const p1 = new Player("player 1", new Gameboard(10, 10), true);
   const p2 = new Player("player 2", new Gameboard(10, 10));
 
-  // placeShips(p1, shipCoordsAndLen);
   placeFleet(p2, randomlyPlaceFleet());
   createUI(p1, p2);
   manageTurn(p1, p2);

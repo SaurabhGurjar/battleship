@@ -180,7 +180,6 @@ export function registerClickOnModal(player, cell, ship, fleet, shipIndex) {
     if (ship.start !== null) {
       ship.setEnd(parseInt(cell.dataset.pos));
       placeAShip(ship, player.gameboard, ship.start, ship.end);
-      highLightShip(player);
       highLightShipOnModal(player);
       removeSecondValidCoordOnBoard(cell, player.gameboard);
       showSelectedShip(player, selectShipToPlaceOnBoard(fleet, shipIndex));
@@ -197,7 +196,6 @@ export function registerClickOnModal(player, cell, ship, fleet, shipIndex) {
     ship.setStart(cell.dataset.pos);
     ship.setEnd(cell.dataset.pos);
     placeAShip(ship, player.gameboard, ship.start, ship.end);
-    highLightShip(player);
   }
 }
 
@@ -223,18 +221,19 @@ export function showGameStatus(status) {
   $("#gsit").textContent = status;
 }
 
-export function manageTurn(player1, player2) {
-  if (player1.isTurn) {
-    $(`#${player1.name.split(" ").join("")}`).style = `
+export function manageTurn(attacker, receiver) {
+  
+  if (attacker.isTurn) {
+    $(`#${createId(attacker.name)}`).style = `
     background: rgb(0, 0, 0, 0.05);`;
   } else {
-    $(`#${player1.name.split(" ").join("")}`).style.background = "none";
+    $(`#${createId(attacker.name)}`).style.background = "none";
   }
-  if (player2.isTurn) {
-    $(`#${player2.name.split(" ").join("")}`).style.background =
+  if (receiver.isTurn) {
+    $(`#${createId(receiver.name)}`).style.background =
       `rgb(0, 0, 0, 0.05)`;
   } else {
-    $(`#${player2.name.split(" ").join("")}`).style.background = "none";
+    $(`#${createId(receiver.name)}`).style.background = "none";
   }
 }
 
@@ -249,8 +248,8 @@ function showAttackedLoc(cell, player) {
   cell.style.backgroundPosition = `center center`;
 }
 
-export function getAttackCoord(cell, player1, player2) {
+export function getAttackCoord(cell, attacker, receiver) {
   if ($("modal-overlay") !== null) return;
-  player1.gameboard.receiveAttack(parseInt(cell.dataset.pos));
-  showAttackedLoc(cell, player1, player2);
+  attacker.gameboard.receiveAttack(parseInt(cell.dataset.pos));
+  showAttackedLoc(cell, attacker, receiver);
 }
