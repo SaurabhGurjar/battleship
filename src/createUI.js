@@ -137,7 +137,6 @@ export default function createUI(player1, player2) {
 
   p1BoardC.appendChild(board1);
   p2BoardC.appendChild(board2);
-  highLightShip(player2);
   $("#main-c").appendChild(
     modal("m", player1, player2, p1ShipIndex, fleet, createPlayerBoard),
   );
