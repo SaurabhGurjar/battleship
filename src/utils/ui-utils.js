@@ -44,9 +44,7 @@ function placeAShip(ship, board, start, end) {
     // TODO: Moves this check to registerClick functions.
     board.placeShipOnBoard(ship, parseInt(start), parseInt(end), ship.length);
   } else {
-    console.log(
-      "The ship can't be place here."
-    );
+    console.log("The ship can't be place here.");
   }
 }
 

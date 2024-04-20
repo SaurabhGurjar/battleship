@@ -1,11 +1,7 @@
 import Player from "./player";
 import Gameboard from "./gameboard";
 import createUI from "./createUI";
-import {
-  getAttackCoord,
-  manageTurn,
-  showGameStatus,
-} from "./utils/ui-utils";
+import { getAttackCoord, manageTurn, showGameStatus } from "./utils/ui-utils";
 import { capitalize } from "./utils/string-utils";
 import { randomlyPlaceFleet } from "./utils/game-utils";
 

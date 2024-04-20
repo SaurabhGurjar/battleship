@@ -131,7 +131,6 @@ describe("place ship on board", () => {
   });
 
   describe("receive attack", () => {
-
     test("ship4 hit until it sunk", () => {
       gameBoard.receiveAttack(9);
       expect(gameBoard.shipLocation.get(9).hits).toEqual(1);
