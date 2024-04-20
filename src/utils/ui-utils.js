@@ -41,11 +41,11 @@ function placeAShip(ship, board, start, end) {
     start + board.boardWidth * (ship.length - 1) === end ||
     end - start === ship.length - 1
   ) {
-    // moves this check to registerClick
+    // TODO: Moves this check to registerClick functions.
     board.placeShipOnBoard(ship, parseInt(start), parseInt(end), ship.length);
   } else {
     console.log(
-      "The ship can't be place here because the selected point are more or less than the ship length.",
+      "The ship can't be place here."
     );
   }
 }
@@ -222,7 +222,6 @@ export function showGameStatus(status) {
 }
 
 export function manageTurn(attacker, receiver) {
-  
   if (attacker.isTurn) {
     $(`#${createId(attacker.name)}`).style = `
     background: rgb(0, 0, 0, 0.05);`;
@@ -230,8 +229,7 @@ export function manageTurn(attacker, receiver) {
     $(`#${createId(attacker.name)}`).style.background = "none";
   }
   if (receiver.isTurn) {
-    $(`#${createId(receiver.name)}`).style.background =
-      `rgb(0, 0, 0, 0.05)`;
+    $(`#${createId(receiver.name)}`).style.background = `rgb(0, 0, 0, 0.05)`;
   } else {
     $(`#${createId(receiver.name)}`).style.background = "none";
   }
