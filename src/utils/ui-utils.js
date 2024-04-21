@@ -17,6 +17,7 @@ export function resetBoardUI(player) {
   const boardLen = player.gameboard.length;
   for (let i = 1; i <= boardLen; i++) {
     $(`#${createId(player.name)}-${i}`).classList.remove("show-ships");
+    $(`#${createId(player.name)}-${i}`).style.background = "";
   }
 }
 
@@ -37,14 +38,14 @@ export function createFleet() {
 }
 
 function placeAShip(ship, board, start, end) {
+  // TODO: Moves this check to registerClick functions.
   if (
     start + board.boardWidth * (ship.length - 1) === end ||
     end - start === ship.length - 1
   ) {
-    // TODO: Moves this check to registerClick functions.
     board.placeShipOnBoard(ship, parseInt(start), parseInt(end), ship.length);
   } else {
-    console.log("The ship can't be place here.");
+    console.error("The ship can't be place here.");
   }
 }
 
@@ -168,11 +169,11 @@ export function resetModalBoard(player) {
   const boardLen = player.gameboard.length;
   for (let i = 1; i < boardLen; i++) {
     $(`${cellId}-${i}`).classList.remove("show-ships");
+    $(`${cellId}-${i}`).style.background = "";
   }
 }
 
 export function registerClickOnModal(player, cell, ship, fleet, shipIndex) {
-  // if (ship.start !== null && ship.end !== null) return;
   cell.style.backgroundColor = `#018881`;
   if (ship.length > 1) {
     if (ship.start !== null) {
