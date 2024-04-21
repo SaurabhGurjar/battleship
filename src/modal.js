@@ -49,6 +49,7 @@ export default function modal(id, owner, other, shipIndex, fleet, createBoard) {
         top: 15%;
         gap: 10px;
         background-color: #fff;
+        padding: 10px;
 
     `;
 
