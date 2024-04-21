@@ -17,6 +17,7 @@ import {
   isStartCoordValid,
   removeSecondValidCoordOnBoard,
   resetBoardUI,
+  highLightShip,
 } from "./utils/ui-utils";
 import Gameboard from "./gameboard";
 import logo from "./static/assets/favicon.png";
@@ -176,6 +177,9 @@ export default function createUI(player1, player2) {
     p1ShipIndex = fleet.length - 1;
     player1.gameboard = new Gameboard(10, 10);
     player2.gameboard = new Gameboard(10, 10);
+    player1._turn = true;
+    player2._turn = false;
+
     resetBoardUI(player1);
     resetBoardUI(player2);
     placeFleet(player2, randomlyPlaceFleet());
