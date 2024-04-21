@@ -134,6 +134,16 @@ export default function createUI(player1, player2) {
   const p2BoardC = $("#p2-c");
   const playAgainBtn = $("#play-again");
 
+  // Add social icons in footer
+  const gitHub = $("#github");
+  const x = $("#x");
+  const xImg = cE("img");
+  const githubImg = cE("img");
+  xImg.src = x_logo;
+  githubImg.src = github;
+  x.appendChild(xImg);
+  gitHub.appendChild(githubImg);
+
   const fleet = createFleet();
   let p1ShipIndex = fleet.length - 1;
   let p2ShipIndex = fleet.length - 1;
