@@ -1,10 +1,14 @@
+import x_logo from "./static/assets/x_logo.png";
+import github from "./static/assets/github.png";
+
 import { gameLoop } from "./game";
 import modal from "./modal";
 import { autoplay } from "./utils/autoplay";
 import { $, cE } from "./utils/dom-utils";
 import { capitalize, createId } from "./utils/string-utils";
+import { placeFleet } from "./game";
+import { randomlyPlaceFleet } from "./utils/game-utils";
 import {
-  highLightShip,
   selectShipToPlaceOnBoard,
   createFleet,
   showSelectedShip,
@@ -12,7 +16,9 @@ import {
   isEndCoordValid,
   isStartCoordValid,
   removeSecondValidCoordOnBoard,
+  resetBoardUI,
 } from "./utils/ui-utils";
+import Gameboard from "./gameboard";
 
 // Provide id when creating a modal
 function createPlayerBoard(id, boardOwner, otherPlayer, shipIndex, fleet) {
@@ -37,6 +43,7 @@ function createPlayerBoard(id, boardOwner, otherPlayer, shipIndex, fleet) {
         // Modal eventListener
         if ($("#modal-overlay")) {
           const ship = selectShipToPlaceOnBoard(fleet, shipIndex);
+          if (boardOwner.gameboard.shipLocation.size >= 18) return;
           if (ship) {
             if (ship.start) {
               if (parseInt(cellDiv.dataset.pos) === ship.start) {
@@ -107,6 +114,9 @@ function createPlayerBoard(id, boardOwner, otherPlayer, shipIndex, fleet) {
           gameLoop(cellDiv, boardOwner, otherPlayer);
           autoplay(boardOwner, otherPlayer);
         }
+        if (boardOwner.gameboard.allShipSunk()) {
+          $("#play-again").style.display = "flex";
+        }
       };
       count++;
       rowDiv.appendChild(cellDiv);
@@ -122,6 +132,8 @@ export default function createUI(player1, player2) {
   const p2Name = $("#p2-name");
   const p1BoardC = $("#p1-c");
   const p2BoardC = $("#p2-c");
+  const playAgainBtn = $("#play-again");
+
   const fleet = createFleet();
   let p1ShipIndex = fleet.length - 1;
   let p2ShipIndex = fleet.length - 1;
@@ -137,6 +149,20 @@ export default function createUI(player1, player2) {
 
   p1BoardC.appendChild(board1);
   p2BoardC.appendChild(board2);
+
+  playAgainBtn.onclick = () => {
+    const fleet = createFleet();
+    p1ShipIndex = fleet.length - 1;
+    player1.gameboard = new Gameboard(10, 10);
+    player2.gameboard = new Gameboard(10, 10);
+    resetBoardUI(player1);
+    resetBoardUI(player2);
+    placeFleet(player2, randomlyPlaceFleet());
+    $("#main-c").appendChild(
+      modal("m", player1, player2, p1ShipIndex, fleet, createPlayerBoard),
+    );
+    showSelectedShip(player1, selectShipToPlaceOnBoard(fleet, p1ShipIndex));
+  };
   $("#main-c").appendChild(
     modal("m", player1, player2, p1ShipIndex, fleet, createPlayerBoard),
   );
