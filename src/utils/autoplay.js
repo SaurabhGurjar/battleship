@@ -6,7 +6,8 @@ function generateAttackCoord(board) {
 }
 
 export function autoplay(boardOwner, otherPlayer) {
-  if(boardOwner.gameboard.allShipSunk() || otherPlayer.gameboard.allShipSunk()) return;
+  if (boardOwner.gameboard.allShipSunk() || otherPlayer.gameboard.allShipSunk())
+    return;
 
   const coord = generateAttackCoord(otherPlayer.gameboard);
   const cell = $(`#${createId(otherPlayer.name)}-${coord}`);
@@ -18,10 +19,10 @@ export function autoplay(boardOwner, otherPlayer) {
     autoplay(boardOwner, otherPlayer);
   } else {
     if (otherPlayer.name !== "player 2") {
-      setTimeout(() => cell.click(), 100);
+      setTimeout(() => cell.click(), 1500);
       // If a ship get hit play again
       if (otherPlayer.gameboard.shipLocation.has(coord)) {
-        setTimeout(() => autoplay(boardOwner, otherPlayer), 100);
+        setTimeout(() => autoplay(boardOwner, otherPlayer), 1000);
       }
     }
   }
