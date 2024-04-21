@@ -120,6 +120,9 @@ export default function modal(id, owner, other, shipIndex, fleet, createBoard) {
 
   doneBtn.onclick = () => {
     overlayDiv.remove();
+    resetBoardUI(owner);
+    const playAgainBtn = $("#play-again");
+    playAgainBtn.style.display = "none";
     highLightShip(owner);
   };
 
@@ -128,6 +131,7 @@ export default function modal(id, owner, other, shipIndex, fleet, createBoard) {
     owner.gameboard.shipLocation.clear();
     placeFleet(owner, randomlyPlaceFleet());
     highLightShipOnModal(owner);
+    shipIndex = 0;
     const doneBtn = $("#done-btn");
     const cancelBtn = $("#cancel-btn");
     doneBtn.disabled = false;
