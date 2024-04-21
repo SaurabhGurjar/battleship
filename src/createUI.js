@@ -19,6 +19,16 @@ import {
   resetBoardUI,
 } from "./utils/ui-utils";
 import Gameboard from "./gameboard";
+import logo from "./static/assets/favicon.png";
+
+function addFavicon() {
+  const head = document.querySelector("head");
+  const linkTag = document.createElement("link");
+  linkTag.rel = "icon";
+  linkTag.type = "image/x-icon";
+  linkTag.href = logo;
+  head.appendChild(linkTag);
+}
 
 // Provide id when creating a modal
 function createPlayerBoard(id, boardOwner, otherPlayer, shipIndex, fleet) {
@@ -144,6 +154,7 @@ export default function createUI(player1, player2) {
   x.appendChild(xImg);
   gitHub.appendChild(githubImg);
 
+  addFavicon();
   const fleet = createFleet();
   let p1ShipIndex = fleet.length - 1;
   let p2ShipIndex = fleet.length - 1;
